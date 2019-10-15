@@ -41,6 +41,15 @@ namespace GenerateONNX_AutoML
         private static ITransformer BuildTrainEvaluateAndSaveModel(MLContext mlContext)
         {
             // STEP 1: Common data loading configuration
+
+            /* contents of csv file 
+             vendor_id,rate_code,passenger_count,trip_time_in_secs,trip_distance,payment_type,fare_amount
+VTS,1,1,1140,3.75,CRD,15.5
+VTS,1,1,480,2.72,CRD,10.0
+VTS,1,1,1680,7.8,CSH,26.5
+VTS,1,1,600,4.73,CSH,14.5
+             */
+
             IDataView trainingDataView = mlContext.Data.LoadFromTextFile<TaxiTrip>(TrainDataPath, hasHeader: true, separatorChar: ',');
             IDataView testDataView = mlContext.Data.LoadFromTextFile<TaxiTrip>(TestDataPath, hasHeader: true, separatorChar: ',');
             // Display first few rows of the training data
@@ -70,8 +79,7 @@ namespace GenerateONNX_AutoML
             // Print metrics from top model
             ConsoleHelper.PrintRegressionMetrics(best.TrainerName, metrics);
 
-            // STEP 5: Save/persist the trained model 
-
+            // STEP 5: Save/persist the trained model - convonnx
 
 
             using (var stream = File.Create(MODEL_NAME))
@@ -91,17 +99,18 @@ namespace GenerateONNX_AutoML
             ConsoleHelper.ConsoleWriteHeader("=============== Testing prediction engine ===============");
 
 
-
-
             var session = new InferenceSession(modelPath);
 
-            var inputMeta = session.InputMetadata;
-            var container = new List<NamedOnnxValue>();
+            /*cont onnx*/
 
+            var inputMeta = session.InputMetadata;
+
+            var container = new List<NamedOnnxValue>();
             container.Add(GetNamedOnnxValue<float>(inputMeta, "PassengerCount", 1f));
             container.Add(GetNamedOnnxValue<float>(inputMeta, "TripTime", 1140f));
             container.Add(GetNamedOnnxValue<float>(inputMeta, "TripDistance", 3.75f));
             container.Add(GetNamedOnnxValue<float>(inputMeta, "FareAmount", 0f));
+            /* output onnx*/
 
             var output = session.Run(container).First(x => x.Name == "Score0").AsTensor<float>().Max();
 

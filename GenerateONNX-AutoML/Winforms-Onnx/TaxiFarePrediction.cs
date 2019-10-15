@@ -20,16 +20,25 @@ namespace WinForms_WinML_ONNX
             InitializeComponent();
         }
 
+        private static NamedOnnxValue GetOnnxValue<T>(IReadOnlyDictionary<string, NodeMetadata> inputMeta, string column, T value)
+        {
+            T[] inputData = new T[] { value };
+            var tensor = new DenseTensor<T>(inputData, inputMeta[column].Dimensions);
+            var namedOnnxValue = NamedOnnxValue.CreateFromTensor<T>(column, tensor);
+            return namedOnnxValue;
+        }
+
         private void Predict()
         {
 
             var inputMeta = _session.InputMetadata;
-            var container = new List<NamedOnnxValue>();
-
-            container.Add(GetOnnxValue<float>(inputMeta, "PassengerCount", float.Parse(passengerCountTB.Text)));
-            container.Add(GetOnnxValue<float>(inputMeta, "TripTime", float.Parse(tripDistanceTB.Text)));
-            container.Add(GetOnnxValue<float>(inputMeta, "TripDistance", float.Parse(tripDistanceTB.Text)));
-            container.Add(GetOnnxValue<float>(inputMeta, "FareAmount", 0f));
+            var container = new List<NamedOnnxValue>
+            {
+                GetOnnxValue<float>(inputMeta, "PassengerCount", float.Parse(passengerCountTB.Text)),
+                GetOnnxValue<float>(inputMeta, "TripTime", float.Parse(tripDistanceTB.Text)),
+                GetOnnxValue<float>(inputMeta, "TripDistance", float.Parse(tripDistanceTB.Text)),
+                GetOnnxValue<float>(inputMeta, "FareAmount", 0f)
+            };
 
             var result = _session.Run(container);
 
@@ -85,14 +94,6 @@ namespace WinForms_WinML_ONNX
         {
             textResponse.Clear();
             labelPrediction.Text = "";
-        }
-
-        private static NamedOnnxValue GetOnnxValue<T>(IReadOnlyDictionary<string, NodeMetadata> inputMeta, string column, T value)
-        {
-            T[] inputData = new T[] { value };
-            var tensor = new DenseTensor<T>(inputData, inputMeta[column].Dimensions);
-            var namedOnnxValue = NamedOnnxValue.CreateFromTensor<T>(column, tensor);
-            return namedOnnxValue;
         }
 
         private void ButtonLoad_Click(object sender, EventArgs e)

@@ -31,13 +31,13 @@ namespace App1
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
+            var shape = new long[] { 1, 1 };
             var modelInput = new taxiFarePredInput()
             {
-                PassengerCount = TensorFloat.CreateFromArray(new long[] { 1, 1 }, new float[] { 1f }),
-                TripTime = TensorFloat.CreateFromArray(new long[] { 1, 1 }, new float[] { 1140f }),
-                TripDistance = TensorFloat.CreateFromArray(new long[] { 1, 1 }, new float[] { 3.75f }),
-       
-                FareAmount = TensorFloat.CreateFromArray(new long[] { 1, 1 }, new float[] { 0f }),
+                PassengerCount = TensorFloat.CreateFromArray(shape, new float[] { 1f }),
+                TripTime = TensorFloat.CreateFromArray(shape, new float[] { 1140f }),
+                TripDistance = TensorFloat.CreateFromArray(shape, new float[] { 3.75f }),
+                FareAmount = TensorFloat.CreateFromArray(shape, new float[] { 0f }),
             };
 
 
