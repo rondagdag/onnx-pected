@@ -2,20 +2,17 @@
 using Microsoft.ML.OnnxRuntime.Tensors;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Math;
+
 namespace WinForms_WinML_ONNX
 {
-    public partial class TaxiFarePrediction : Form
+    public partial class PayFullPricePredictor : Form
     {
-        public TaxiFarePrediction()
+        public PayFullPricePredictor()
         {
             InitializeComponent();
         }
@@ -33,17 +30,16 @@ namespace WinForms_WinML_ONNX
             var inputMeta = _session.InputMetadata;
             var container = new List<NamedOnnxValue>
             {
-                GetOnnxValue<float>(inputMeta, "PassengerCount", float.Parse(passengerCountTB.Text)),
-                GetOnnxValue<float>(inputMeta, "TripTime", float.Parse(tripDistanceTB.Text)),
-                GetOnnxValue<float>(inputMeta, "TripDistance", float.Parse(tripDistanceTB.Text)),
-                GetOnnxValue<float>(inputMeta, "FareAmount", 0f)
+                GetOnnxValue<string>(inputMeta, "ProductID", productIDTB.Text),
+                GetOnnxValue<float>(inputMeta, "UnitPrice", float.Parse(unitPriceTB.Text)),
+                GetOnnxValue<float>(inputMeta, "Quantity", float.Parse(quantityTB.Text)),
+                GetOnnxValue<string>(inputMeta, "Discount", "0")
             };
 
             var result = _session.Run(container);
 
             var output = result.First(x => x.Name == "Score0").AsTensor<float>().ToArray();
-            var scores = result.Select(x => x.AsTensor<float>()).ToArray();
-            var pred = output.Max();
+            var pred = result.First(x => x.Name == "PredictedLabel0").AsTensor<bool>().GetValue(0);
             ShowResult(pred, output, 0);
         }
 
@@ -70,7 +66,7 @@ namespace WinForms_WinML_ONNX
             return sb.ToString();
         }
 
-        private void ShowResult(float prediction, float[] scores, double time, Func<double, double> conversion = null)
+        private void ShowResult(bool prediction, float[] scores, double time, Func<double, double> conversion = null)
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("Scores:");
@@ -109,11 +105,6 @@ namespace WinForms_WinML_ONNX
         private void ButtonRecognize_Click(object sender, EventArgs e)
         {
             Predict();
-        }
-
-        private void TextResponse_TextChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }

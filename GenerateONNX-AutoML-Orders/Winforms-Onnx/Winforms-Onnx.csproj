@@ -219,11 +219,11 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TaxiFarePrediction.cs">
+    <Compile Include="PayFullPricePredictor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TaxiFarePrediction.Designer.cs">
-      <DependentUpon>TaxiFarePrediction.cs</DependentUpon>
+    <Compile Include="PayFullPricePredictor.Designer.cs">
+      <DependentUpon>PayFullPricePredictor.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -234,8 +234,8 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="TaxiFarePrediction.resx">
-      <DependentUpon>TaxiFarePrediction.cs</DependentUpon>
+    <EmbeddedResource Include="PayFullPricePredictor.resx">
+      <DependentUpon>PayFullPricePredictor.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

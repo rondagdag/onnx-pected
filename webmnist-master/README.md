@@ -10,7 +10,14 @@ browser: http://127.0.0.1:8080/index.html
 
 
 
+
+How to train and create model.onnx
+
+> conda install pytorch torchvision cudatoolkit=10.1 -c pytorch
+
 Run train.py
+
+> python train.py
 
 This is how it saves the model to ONNX
 

@@ -3,11 +3,11 @@ using Microsoft.ML;
 using Microsoft.ML.AutoML;
 using Microsoft.ML.Data;
 using Microsoft.ML.OnnxRuntime;
+using Microsoft.ML.OnnxRuntime.Tensors;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Numerics.Tensors;
 using TaxiFarePrediction.DataStructures;
 
 namespace GenerateONNX_AutoML
@@ -87,8 +87,6 @@ VTS,1,1,600,4.73,CSH,14.5
                 mlContext.Model.ConvertToOnnx(trainedModel, trainingDataView, stream);
             }
             Console.WriteLine("The model is saved to {0}", MODEL_NAME);
-
-
 
 
             return trainedModel;
