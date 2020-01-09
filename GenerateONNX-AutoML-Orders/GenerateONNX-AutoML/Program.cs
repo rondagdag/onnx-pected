@@ -41,8 +41,6 @@ namespace GenerateONNX_AutoML
         {
             // STEP 1: Common data loading configuration
 
-            DatabaseLoader loader = mlContext.Data.CreateDatabaseLoader<OrderDetails>();
-
             string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Database=Northwind;Integrated Security=True;Connect Timeout=30";
 
             string sqlCommand = @"SELECT OrderID, 
@@ -53,6 +51,8 @@ namespace GenerateONNX_AutoML
                                     FROM [dbo].[Order Details]";
 
             DatabaseSource dbSource = new DatabaseSource(SqlClientFactory.Instance, connectionString, sqlCommand);
+
+            DatabaseLoader loader = mlContext.Data.CreateDatabaseLoader<OrderDetails>();
 
             IDataView dataview = loader.Load(dbSource);
 
@@ -78,9 +78,11 @@ namespace GenerateONNX_AutoML
             //// STEP 3: Run AutoML regression experiment
             ConsoleHelper.ConsoleWriteHeader("=============== Training the model ===============");
             Console.WriteLine($"Running AutoML regression experiment for {ExperimentTime} seconds...");
+
             ExperimentResult<BinaryClassificationMetrics> experimentResult = mlContext.Auto()
                 .CreateBinaryClassificationExperiment(ExperimentTime)
                 .Execute(transformedDataView, LabelColumnName, progressHandler: progressHandler);
+
             // Print top models found by AutoML
             Console.WriteLine();
             PrintTopModels(experimentResult);
