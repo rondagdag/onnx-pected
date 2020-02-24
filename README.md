@@ -8,4 +8,4 @@ GenerateONNX-AutoML - uses AutoML to create a model and convert to ONNX. Deploy 
 
 webmnist-master - Create an ONNX file using Pytorch, then use ONNX in web browser via ONNXjs
 
-@rondagd
+@rondagdag
