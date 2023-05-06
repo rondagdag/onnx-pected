@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -26,7 +26,7 @@
     <PackageReference Include="Microsoft.ML.OnnxConverter" Version="0.17.0-preview" />
     <PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.1.0" />
     <PackageReference Include="Microsoft.ML.OnnxTransformer" Version="1.5.0-preview" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
   </ItemGroup>
 
 </Project>
